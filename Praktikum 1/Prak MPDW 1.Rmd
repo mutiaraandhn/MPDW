@@ -1,7 +1,132 @@
-
+---
+title: "Pertemuan 1"
+author:Mutiara Andhini
+output:
+  html_document: default
+  pdf_document: default
+  word_document: default
+---
 
 ```{r}
-x = 3+2
-x
+library("forecast")
+library("graphics")
+library("TTR")
+library("TSA")
 ```
 
+```{r}
+library(rio)
+library(readxl)
+data <- read_xlsx("C:/Users/ASUS A416/Documents/Semester 5/MPDW/Used Car Transaction.xlsx")
+```
+
+```{r}
+View(data)
+str(data)
+dim(data)
+```
+
+```{r}
+data.ts <- ts(data$Used_Car_Transaction)
+summary(data)
+```
+
+```{r}
+ts.plot(data.ts, xlab="Time Period ", ylab="Used Car Transaction", 
+        main = "Time Series Plot")
+points(data.ts)
+```
+Pembagian data latih dan data uji dilakukan dengan perbandingan 80% data latih dan 20% data uji.
+```{r}
+#membagi data latih dan data uji
+training_ma <- data[1:92,]
+testing_ma <- data[93:114,]
+train_ma.ts <- ts(training_ma$Used_Car_Transaction)
+test_ma.ts <- ts(testing_ma$Used_Car_Transaction)
+```
+
+Eksplorasi data dilakukan pada keseluruhan data, data latih serta data uji menggunakan plot data deret waktu.
+
+```{r}
+#eksplorasi keseluruhan data
+plot(data.ts, col="red",main="Plot semua data")
+points(data.ts)
+
+#eksplorasi data latih
+plot(train_ma.ts, col="blue",main="Plot data latih")
+points(train_ma.ts)
+
+#eksplorasi data uji
+plot(test_ma.ts, col="blue",main="Plot data uji")
+points(test_ma.ts)
+```
+
+```{r}
+#Eksplorasi dengan GGPLOT
+library(ggplot2)
+ggplot() + 
+  geom_line(data = training_ma, aes(x = Bulan, y = Used_Car_Transaction, col = "Data Latih")) +
+  geom_line(data = testing_ma, aes(x = Bulan, y = Used_Car_Transaction, col = "Data Uji")) +
+  labs(x = "Periode Waktu", y = "Sales", color = "Legend") +
+  scale_colour_manual(name="Keterangan:", breaks = c("Data Latih", "Data Uji"),
+                      values = c("blue", "red")) + 
+  theme_bw() + theme(legend.position = "bottom",
+                     plot.caption = element_text(hjust=0.5, size=12))
+```
+
+
+Pemulusan menggunakan metode SMA dilakukan dengan fungsi `SMA()`. Dalam hal ini akan dilakukan pemulusan dengan parameter `m=4`.
+```{r}
+data.sma<-SMA(train_ma.ts, n=5)
+data.sma
+```
+
+Data pemulusan pada periode ke-t selanjutnya digunakan sebagai nilai peramalan pada periode ke t+1 sehingga hasil peramalan 1 periode kedepan adalah sebagai berikut.
+```{r}
+data.ramal<-c(NA,data.sma)
+data.ramal #forecast 1 periode ke depan
+```
+
+```{r}
+data.gab<-cbind(aktual=c(train_ma.ts,rep(NA,24)),pemulusan=c(data.sma,rep(NA,24)),ramalan=c(data.ramal,rep(data.ramal[length(data.ramal)],23)))
+data.gab #forecast 24 periode ke depan
+```
+
+```{r}
+ts.plot(data.ts, xlab="Time Period ", ylab="Used Car Transaction", main= "SMA N=5 Data Used Car")
+points(data.ts)
+lines(data.gab[,2],col="green",lwd=2)
+lines(data.gab[,3],col="red",lwd=2)
+legend("topleft",c("data aktual","data pemulusan","data peramalan"), lty=8, col=c("black","green","red"), cex=0.5)
+```
+
+```{r}
+#Menghitung nilai keakuratan data latih
+error_train.sma = train_ma.ts-data.ramal[1:length(train_ma.ts)]
+
+SSE_train.sma = sum(error_train.sma[6:length(train_ma.ts)]^2)
+
+MSE_train.sma = mean(error_train.sma[6:length(train_ma.ts)]^2)
+
+MAPE_train.sma = mean(abs((error_train.sma[6:length(train_ma.ts)]/train_ma.ts[6:length(train_ma.ts)])*100))
+
+akurasi_train.sma <- matrix(c(SSE_train.sma, MSE_train.sma, MAPE_train.sma))
+row.names(akurasi_train.sma)<- c("SSE", "MSE", "MAPE")
+colnames(akurasi_train.sma) <- c("Akurasi m = 5")
+akurasi_train.sma
+```
+Dalam hal ini nilai MAPE data latih pada metode pemulusan SMA kurang dari 2%, nilai ini dapat dikategorikan sebagai nilai akurasi yang sangat baik. Selanjutnya dilakukan perhitungan nilai MAPE data uji pada metde pemulusan SMA.
+
+```{r}
+#Menghitung nilai keakuratan data uji
+error_test.sma = test_ma.ts-data.gab[93:114,3]
+SSE_test.sma = sum(error_test.sma^2)
+MSE_test.sma = mean(error_test.sma^2)
+MAPE_test.sma = mean(abs((error_test.sma/test_ma.ts*100)))
+
+akurasi_test.sma <- matrix(c(SSE_test.sma, MSE_test.sma, MAPE_test.sma))
+row.names(akurasi_test.sma)<- c("SSE", "MSE", "MAPE")
+colnames(akurasi_test.sma) <- c("Akurasi m = 5")
+akurasi_test.sma
+```
+Perhitungan akurasi menggunakan data latih menghasilkan nilai MAPE yang kurang dari 10% sehingga nilai akurasi ini dapat dikategorikan sebagai sangat baik.
