@@ -58,7 +58,7 @@ plot(train_ma.ts, col="blue",main="Plot data latih")
 points(train_ma.ts)
 
 #eksplorasi data uji
-plot(test_ma.ts, col="blue",main="Plot data uji")
+plot(test_ma.ts, col="green",main="Plot data uji")
 points(test_ma.ts)
 ```
 
