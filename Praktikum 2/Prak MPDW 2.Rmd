@@ -81,7 +81,7 @@ plot(fitValue, sisaan, col = "steelblue", pch = 20, xlab = "Sisaan", ylab = "Fit
 abline(a = 0, b = 0, lwd = 2)
 hist(sisaan, col = "steelblue")
 plot(seq(1,72,1), sisaan, col = "steelblue", pch = 20, xlab = "Sisaan", ylab = "Order", main = "Sisaan vs Order")
-lines(seq(1,72,1), sisaan, col = "red")
+lines(seq(1,72,1), sisaan, col = "blue")
 abline(a = 0, b = 0, lwd = 2)
 ```
 ```{r}
