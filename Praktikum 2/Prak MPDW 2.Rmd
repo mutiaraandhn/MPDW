@@ -76,12 +76,12 @@ fitValue<- predict(modelreg)
 #Diagnostik dengan eksploratif
 par(mfrow = c(2,2))
 qqnorm(sisaan) #normal qq plot
-qqline(sisaan, col = "steelblue", lwd = 2) #normal qq plot
-plot(fitValue, sisaan, col = "steelblue", pch = 20, xlab = "Sisaan", ylab = "Fitted Values", main = "Sisaan vs Fitted Values")
+qqline(sisaan, col = "blue", lwd = 2) #normal qq plot
+plot(fitValue, sisaan, col = "blue", pch = 20, xlab = "Sisaan", ylab = "Fitted Values", main = "Sisaan vs Fitted Values")
 abline(a = 0, b = 0, lwd = 2)
-hist(sisaan, col = "steelblue")
-plot(seq(1,72,1), sisaan, col = "steelblue", pch = 20, xlab = "Sisaan", ylab = "Order", main = "Sisaan vs Order")
-lines(seq(1,72,1), sisaan, col = "blue")
+hist(sisaan, col = "blue")
+plot(seq(1,72,1), sisaan, col = "blue", pch = 20, xlab = "Sisaan", ylab = "Order", main = "Sisaan vs Order")
+lines(seq(1,72,1), sisaan, col = "red")
 abline(a = 0, b = 0, lwd = 2)
 ```
 ```{r}
