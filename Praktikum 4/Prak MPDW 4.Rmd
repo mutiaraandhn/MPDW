@@ -1,0 +1,11 @@
+---
+title: "Prak MPDW 4"
+author: "Mutiara Andhini"
+date: "2023-09-12"
+output: html_document
+---
+```{r}
+test <- x+y
+
+```
+
