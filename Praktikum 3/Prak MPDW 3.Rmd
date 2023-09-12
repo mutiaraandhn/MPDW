@@ -6,8 +6,5 @@ output: html_document
 ---
 
 ```{r}
-TEST
-1
-2
-
+TEST <- 1+2
 ```
