@@ -17,7 +17,9 @@ library(MASS)
 data5 <- rio::import("https://raw.githubusercontent.com/mutiaraandhn/MPDW/main/Praktikum%201/Data%20Used%20Car.xlsx")
 str(data5)
 ```
+
 ```{r}
+#Menjadikan data time series
 stas5 <- ts(data5$Used_Car_Transaction)
 stas5
 ```
