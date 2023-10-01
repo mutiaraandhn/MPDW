@@ -126,7 +126,7 @@ Gambar di atas menunjukkan nilai *rounded value* ($\lambda$) optimum sebesar **6
 #### Bagian 2
 
 ```{r}
-dt_stas2 <- stas[1:95] |> ts()
+dt_stas2 <- stas5[1:95] |> ts()
 mean(dt_stas2)
 var(dt_stas2)
 ```
@@ -160,7 +160,7 @@ $H_0$ : Data tidak stasioner dalam rataan
 
 $H_1$ : Data stasioner dalam rataan
 
-Berdasarkan uji ADF tersebut, didapat *p-value* sebesar 0.01295 yang lebih kecil dari taraf nyata 5% sehingga tolak $H_0$ dan menandakan bahwa data stasioner dalam rataan. Hal ini sesuai dengan hasil eksplorasi menggunakan plot time series dan plot ACF.
+Berdasarkan uji ADF tersebut, didapat *p-value* sebesar 0.01 yang lebih kecil dari taraf nyata 5% sehingga tolak $H_0$ dan menandakan bahwa data stasioner dalam rataan. Hal ini sesuai dengan hasil eksplorasi menggunakan plot time series dan plot ACF.
 
 #### Plot Boxcox
 
@@ -174,4 +174,4 @@ lambda
 bc$x[bc$y > max(bc$y) - 1/2 * qchisq(.95,1)]
 ```
 
-Gambar di atas menunjukkan nilai *rounded value* ($\lambda$) optimum sebesar **1.818182** dan pada selang kepercayaan 95% nilai memiliki batas bawah **0** dan batas atas **4.78787879**. Selang tersebut memuat nilai satu sehingga dapat dikatakan bahwa data bangkitan stasioner dalam ragam.
+Gambar di atas menunjukkan nilai *rounded value* ($\lambda$) optimum sebesar **4.848485** dan pada selang kepercayaan 95% nilai memiliki batas bawah **3.575758** dan batas atas **6**. Selang tersebut memuat nilai satu sehingga dapat dikatakan bahwa data bangkitan stasioner dalam ragam.
